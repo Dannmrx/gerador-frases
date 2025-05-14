@@ -1,69 +1,133 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Gerador de Frases</title>
+  <meta charset="UTF-8">
+  <title>Gerador de Frases com Hora Atual</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
+      padding: 40px;
+      background-color: #f0f0f0;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 12px;
       padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: inline-block;
+      max-width: 700px;
     }
-    select, button {
-      padding: 10px;
-      font-size: 16px;
-      margin: 10px;
+    img.logo {
+      max-width: 200px;
+      margin-bottom: 20px;
     }
-    #frase {
-      margin-top: 30px;
-      font-size: 18px;
-      white-space: pre-wrap;
-      text-align: left;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .button-container {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin: 20px 0;
-    }
-    .type-button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border: 1px solid #ccc;
-      background-color: #f8f8f8;
-      border-radius: 5px;
-    }
-    .type-button.active {
-      background-color: #4CAF50;
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      font-size: 1em;
+      background-color: #007bff;
       color: white;
-      border-color: #4CAF50;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #mensagem {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+    #fraseCopiada {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f8f8f8;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-style: italic;
+      white-space: pre-wrap;
+    }
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      width: 100%;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      border-radius: 0 0 8px 8px;
+    }
+    .dropdown-content button {
+      background-color: #f1f1f1;
+      color: black;
+      text-align: left;
+      border-radius: 0;
+    }
+    .dropdown-content button:hover {
+      background-color: #ddd;
+    }
+    .show {
+      display: block;
+    }
+    .main-btn {
+      background-color: #4CAF50 !important;
+    }
+    .jira-buttons, .risco-buttons {
+      display: none;
+    }
+    .active-section {
+      display: block;
     }
   </style>
 </head>
 <body>
-  <h1>Gerador de Frases</h1>
-
-  <div class="button-container">
-    <button class="type-button active" data-type="jira">Frases Jira</button>
-    <button class="type-button" data-type="risco">Comunicado Bloqueio</button>
+  <div class="container">
+    <img src="anagaming.jpg" class="logo">
+    <h2>Gerador de Frases com Hora Atual</h2>
+    
+    <div class="dropdown">
+      <button onclick="toggleDropdown()" class="main-btn">Selecione o Tipo de Frase ▼</button>
+      <div id="dropdownContent" class="dropdown-content">
+        <button onclick="selectSection('jira')">Frases Jira</button>
+        <button onclick="selectSection('risco')">Frases Risco</button>
+      </div>
+    </div>
+    
+    <div id="jiraButtons" class="jira-buttons">
+      <button onclick="copiarFrase(0)">Creditação rodadas grátis (erro)</button>
+      <button onclick="copiarFrase(1)">Creditação erro gerais</button>
+      <button onclick="copiarFrase(2)">Creditação sem erro</button>
+      <button onclick="copiarFrase(3)">Fechar CDT - Resposta passada no e-mail</button>
+      <button onclick="copiarFrase(4)">CDT Bloqueio</button>
+    </div>
+    
+    <div id="riscoButtons" class="risco-buttons">
+      <button onclick="copiarFraseRisco()">Comunicado Bloqueio</button>
+    </div>
+    
+    <div id="mensagem"></div>
+    <div id="fraseCopiada"></div>
   </div>
 
-  <button onclick="gerarFrase()">Gerar frase</button>
-
-  <div id="frase"></div>
-
   <script>
-    const frasesJira = [
-      "Conta bloqueada por uso de dados inconsistentes.",
-      "Identificamos atividade suspeita e a conta foi temporariamente suspensa.",
-      "Conforme nossos Termos, a conta foi bloqueada para verificação adicional."
+    const frasesBase = [
+      "O erro foi identificado e a creditação manual da indicação de forma compensatória foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
+      "O erro foi identificado e a creditação foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
+      "A creditação foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
+      "Tratativa passada ao cliente via e-mail de risco. Operação concluída às HORA do dia DATA. ✅",
+      "Usuário auto-excluído. Operação concluída às HORA do dia DATA. ✅"
     ];
 
-    const frasesRisco = [`Prezado(a) Cliente,
+    const fraseRisco = `Prezado(a) Cliente,
 
 Conforme previsto em nossos Termos e Condições, identificamos o uso indevido da oferta de FREEBETS.
 
@@ -88,29 +152,73 @@ Cláusula 4.4 – A ANA Gaming poderá suspender temporariamente a conta do usu�
 Agradecemos pela compreensão.
 
 Atenciosamente,
-Equipe ANA Gaming`];
+Equipe ANA Gaming`;
 
-    let currentType = "jira";
+    function toggleDropdown() {
+      document.getElementById("dropdownContent").classList.toggle("show");
+    }
 
-    // Adiciona eventos aos botões de tipo
-    document.querySelectorAll('.type-button').forEach(button => {
-      button.addEventListener('click', function() {
-        // Remove a classe active de todos os botões
-        document.querySelectorAll('.type-button').forEach(btn => {
-          btn.classList.remove('active');
-        });
-        // Adiciona a classe active apenas ao botão clicado
-        this.classList.add('active');
-        currentType = this.dataset.type;
+    function selectSection(section) {
+      // Esconde o dropdown
+      document.getElementById("dropdownContent").classList.remove("show");
+      
+      // Atualiza o botão principal
+      const mainBtn = document.querySelector(".main-btn");
+      mainBtn.textContent = section === 'jira' ? 'Frases Jira ▼' : 'Frases Risco ▼';
+      
+      // Esconde todas as seções
+      document.getElementById("jiraButtons").classList.remove("active-section");
+      document.getElementById("riscoButtons").classList.remove("active-section");
+      
+      // Mostra apenas a seção selecionada
+      document.getElementById(section + "Buttons").classList.add("active-section");
+    }
+
+    function getCurrentDateTime() {
+      const agora = new Date();
+      const hora = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      const dia = agora.getDate().toString().padStart(2, '0');
+      const mes = (agora.getMonth() + 1).toString().padStart(2, '0');
+      const ano = agora.getFullYear();
+      return { hora, data: `${dia}/${mes}/${ano}` };
+    }
+
+    function copiarFrase(indice) {
+      const { hora, data } = getCurrentDateTime();
+      const fraseFinal = frasesBase[indice]
+        .replace('HORA', hora)
+        .replace('DATA', data);
+
+      copyToClipboard(fraseFinal);
+    }
+
+    function copiarFraseRisco() {
+      copyToClipboard(fraseRisco);
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        document.getElementById('mensagem').textContent = "Frase copiada!";
+        document.getElementById('fraseCopiada').textContent = text;
+        setTimeout(() => {
+          document.getElementById('mensagem').textContent = "";
+        }, 2000);
+      }).catch(() => {
+        document.getElementById('mensagem').textContent = "Erro ao copiar a frase.";
       });
-    });
+    }
 
-    function gerarFrase() {
-      const fraseBox = document.getElementById("frase");
-      const frases = currentType === "jira" ? frasesJira : frasesRisco;
-      const frase = frases[Math.floor(Math.random() * frases.length)];
-
-      fraseBox.textContent = frase;
+    // Fecha o dropdown se clicar fora dele
+    window.onclick = function(event) {
+      if (!event.target.matches('.main-btn')) {
+        const dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+          const openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
     }
   </script>
 </body>
