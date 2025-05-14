@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerador de Frases com Hora Atual</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background-color: #f0f0f0;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: inline-block;
+      max-width: 700px;
+    }
+    img.logo {
+      max-width: 200px;
+      margin-bottom: 20px;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      font-size: 1em;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #mensagem {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+    #fraseCopiada {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f8f8f8;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-style: italic;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="anagaming.jpg">
+    <h2>Gerador de Frases com Hora Atual</h2>
+    
+    <button onclick="copiarFrase(0)">Creditação rodadas grátis (erro)</button>
+    <button onclick="copiarFrase(1)">Creditação erro gerais</button>
+    <button onclick="copiarFrase(2)">Creditação sem erro</button>
+    <button onclick="copiarFrase(3)">Fechar CDT - Resposta passada no e-mail</button>
+    <button onclick="copiarFrase(4)">CDT Bloqueio</button>
+    
+    <div id="mensagem"></div>
+    <div id="fraseCopiada"></div>
+  </div>
+
+  <script>
+    const frasesBase = [
+      "O erro foi identificado e a creditação manual da indicação de forma compensatória foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
+      "O erro foi identificado e a creditação foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
+      "A creditação foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
+      "Tratativa passada ao cliente via e-mail de risco. Operação concluída às HORA do dia DATA. ✅",
+      "Usuário auto-excluído. Operação concluída às HORA do dia DATA. ✅"
+    ];
+
+    function copiarFrase(indice) {
+      const agora = new Date();
+      const hora = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      const dia = agora.getDate().toString().padStart(2, '0');
+      const mes = (agora.getMonth() + 1).toString().padStart(2, '0');
+      const ano = agora.getFullYear();
+      const data = `${dia}/${mes}/${ano}`;
+
+      const fraseFinal = frasesBase[indice]
+        .replace('HORA', hora)
+        .replace('DATA', data);
+
+      navigator.clipboard.writeText(fraseFinal).then(() => {
+        document.getElementById('mensagem').textContent = "Frase copiada!";
+        document.getElementById('fraseCopiada').textContent = fraseFinal;
+        setTimeout(() => {
+          document.getElementById('mensagem').textContent = "";
+        }, 2000);
+      }).catch(() => {
+        document.getElementById('mensagem').textContent = "Erro ao copiar a frase.";
+      });
+    }
+  </script>
+</body>
+</html>
