@@ -9,6 +9,11 @@
       text-align: center;
       padding: 40px;
       background-color: #f0f0f0;
+      transition: all 0.3s ease;
+    }
+    body.dark-mode {
+      background-color: #222;
+      color: #fff;
     }
     .container {
       background-color: #fff;
@@ -17,6 +22,11 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       display: inline-block;
       max-width: 700px;
+      transition: all 0.3s ease;
+    }
+    .dark-mode .container {
+      background-color: #333;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
     }
     img.logo {
       max-width: 200px;
@@ -38,10 +48,23 @@
     button:hover {
       background-color: #0056b3;
     }
+    .dark-mode button {
+      background-color: #555;
+    }
+    .dark-mode button:hover {
+      background-color: #777;
+    }
     #mensagem {
       margin-top: 20px;
       font-weight: bold;
       color: green;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+    }
+    #mensagem.show {
+      opacity: 1;
+      transform: translateY(0);
     }
     #fraseCopiada {
       margin-top: 20px;
@@ -51,6 +74,11 @@
       border-radius: 8px;
       font-style: italic;
       white-space: pre-wrap;
+      transition: all 0.3s ease;
+    }
+    .dark-mode #fraseCopiada {
+      background-color: #444;
+      border-color: #666;
     }
     .dropdown {
       position: relative;
@@ -66,14 +94,24 @@
       z-index: 1;
       border-radius: 0 0 8px 8px;
     }
+    .dark-mode .dropdown-content {
+      background-color: #444;
+    }
     .dropdown-content button {
       background-color: #f1f1f1;
       color: black;
       text-align: left;
       border-radius: 0;
     }
+    .dark-mode .dropdown-content button {
+      background-color: #555;
+      color: white;
+    }
     .dropdown-content button:hover {
       background-color: #ddd;
+    }
+    .dark-mode .dropdown-content button:hover {
+      background-color: #666;
     }
     .show {
       display: block;
@@ -81,18 +119,50 @@
     .main-btn {
       background-color: #4CAF50 !important;
     }
+    .dark-mode .main-btn {
+      background-color: #2E7D32 !important;
+    }
     .jira-buttons, .risco-buttons {
       display: none;
     }
     .active-section {
       display: block;
     }
+    #busca {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    .dark-mode #busca {
+      background-color: #444;
+      color: white;
+      border-color: #666;
+    }
+    #darkModeBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: auto;
+      padding: 8px 15px;
+      background-color: #333;
+      color: white;
+    }
+    .dark-mode #darkModeBtn {
+      background-color: #f0f0f0;
+      color: #333;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <img src="anagaming.jpg" class="logo">
+    <button id="darkModeBtn">🌙 Dark Mode</button>
+    <img src="anagaming.jpg" class="logo" alt="Logo ANA Gaming" onerror="this.style.display='none'">
     <h2>Gerador de Frases com Hora Atual</h2>
+    
+    <input type="text" id="busca" placeholder="Buscar frases...">
     
     <div class="dropdown">
       <button onclick="toggleDropdown()" class="main-btn">Selecione o Tipo de Frase ▼</button>
@@ -154,24 +224,43 @@ Agradecemos pela compreensão.
 Atenciosamente,
 Equipe ANA Gaming`;
 
+    // Dark Mode
+    document.getElementById('darkModeBtn').addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    });
+
+    // Verificar preferência de dark mode ao carregar
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark-mode');
+    }
+
+    // Busca por frases
+    document.getElementById('busca').addEventListener('input', (e) => {
+      const termo = e.target.value.toLowerCase();
+      const buttons = document.querySelectorAll('#jiraButtons button, #riscoButtons button');
+      
+      buttons.forEach(btn => {
+        const textoBtn = btn.textContent.toLowerCase();
+        btn.style.display = textoBtn.includes(termo) ? 'block' : 'none';
+      });
+    });
+
     function toggleDropdown() {
       document.getElementById("dropdownContent").classList.toggle("show");
     }
 
     function selectSection(section) {
-      // Esconde o dropdown
       document.getElementById("dropdownContent").classList.remove("show");
-      
-      // Atualiza o botão principal
       const mainBtn = document.querySelector(".main-btn");
       mainBtn.textContent = section === 'jira' ? 'Frases Jira ▼' : 'Frases Risco ▼';
       
-      // Esconde todas as seções
       document.getElementById("jiraButtons").classList.remove("active-section");
       document.getElementById("riscoButtons").classList.remove("active-section");
-      
-      // Mostra apenas a seção selecionada
       document.getElementById(section + "Buttons").classList.add("active-section");
+      
+      // Disparar evento de busca novamente para aplicar filtro na nova seção
+      document.getElementById('busca').dispatchEvent(new Event('input'));
     }
 
     function getCurrentDateTime() {
@@ -198,17 +287,23 @@ Equipe ANA Gaming`;
 
     function copyToClipboard(text) {
       navigator.clipboard.writeText(text).then(() => {
-        document.getElementById('mensagem').textContent = "Frase copiada!";
+        const msg = document.getElementById('mensagem');
+        msg.textContent = "Frase copiada com sucesso!";
+        msg.classList.add('show');
+        
         document.getElementById('fraseCopiada').textContent = text;
+        
         setTimeout(() => {
-          document.getElementById('mensagem').textContent = "";
+          msg.classList.remove('show');
         }, 2000);
       }).catch(() => {
-        document.getElementById('mensagem').textContent = "Erro ao copiar a frase.";
+        const msg = document.getElementById('mensagem');
+        msg.textContent = "Erro ao copiar a frase.";
+        msg.classList.add('show');
       });
     }
 
-    // Fecha o dropdown se clicar fora dele
+    // Fechar dropdown ao clicar fora
     window.onclick = function(event) {
       if (!event.target.matches('.main-btn')) {
         const dropdowns = document.getElementsByClassName("dropdown-content");
@@ -220,6 +315,9 @@ Equipe ANA Gaming`;
         }
       }
     }
+
+    // Inicializar com Frases Jira
+    selectSection('jira');
   </script>
 </body>
 </html>
