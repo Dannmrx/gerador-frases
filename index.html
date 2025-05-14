@@ -1,104 +1,116 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Gerador de Frases com Hora Atual</title>
+  <meta charset="UTF-8" />
+  <title>Gerador de Frases</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 40px;
-      background-color: #f0f0f0;
-    }
-    .container {
-      background-color: #fff;
-      border-radius: 12px;
       padding: 30px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      display: inline-block;
-      max-width: 700px;
     }
-    img.logo {
-      max-width: 200px;
-      margin-bottom: 20px;
+    select, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px;
     }
-    button {
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      padding: 12px;
-      font-size: 1em;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    #mensagem {
-      margin-top: 20px;
-      font-weight: bold;
-      color: green;
-    }
-    #fraseCopiada {
-      margin-top: 20px;
-      padding: 15px;
-      background-color: #f8f8f8;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-style: italic;
+    #frase {
+      margin-top: 30px;
+      font-size: 18px;
       white-space: pre-wrap;
+      text-align: left;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .type-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background-color: #f8f8f8;
+      border-radius: 5px;
+    }
+    .type-button.active {
+      background-color: #4CAF50;
+      color: white;
+      border-color: #4CAF50;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <img src="anagaming.jpg">
-    <h2>Gerador de Frases com Hora Atual</h2>
-    
-    <button onclick="copiarFrase(0)">Creditação rodadas grátis (erro)</button>
-    <button onclick="copiarFrase(1)">Creditação erro gerais</button>
-    <button onclick="copiarFrase(2)">Creditação sem erro</button>
-    <button onclick="copiarFrase(3)">Fechar CDT - Resposta passada no e-mail</button>
-    <button onclick="copiarFrase(4)">CDT Bloqueio</button>
-    
-    <div id="mensagem"></div>
-    <div id="fraseCopiada"></div>
+  <h1>Gerador de Frases</h1>
+
+  <div class="button-container">
+    <button class="type-button active" data-type="jira">Frases Jira</button>
+    <button class="type-button" data-type="risco">Comunicado Bloqueio</button>
   </div>
 
+  <button onclick="gerarFrase()">Gerar frase</button>
+
+  <div id="frase"></div>
+
   <script>
-    const frasesBase = [
-      "O erro foi identificado e a creditação manual da indicação de forma compensatória foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
-      "O erro foi identificado e a creditação foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
-      "A creditação foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
-      "Tratativa passada ao cliente via e-mail de risco. Operação concluída às HORA do dia DATA. ✅",
-      "Usuário auto-excluído. Operação concluída às HORA do dia DATA. ✅"
+    const frasesJira = [
+      "Conta bloqueada por uso de dados inconsistentes.",
+      "Identificamos atividade suspeita e a conta foi temporariamente suspensa.",
+      "Conforme nossos Termos, a conta foi bloqueada para verificação adicional."
     ];
 
-    function copiarFrase(indice) {
-      const agora = new Date();
-      const hora = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-      const dia = agora.getDate().toString().padStart(2, '0');
-      const mes = (agora.getMonth() + 1).toString().padStart(2, '0');
-      const ano = agora.getFullYear();
-      const data = `${dia}/${mes}/${ano}`;
+    const frasesRisco = [`Prezado(a) Cliente,
 
-      const fraseFinal = frasesBase[indice]
-        .replace('HORA', hora)
-        .replace('DATA', data);
+Conforme previsto em nossos Termos e Condições, identificamos o uso indevido da oferta de FREEBETS.
 
-      navigator.clipboard.writeText(fraseFinal).then(() => {
-        document.getElementById('mensagem').textContent = "Frase copiada!";
-        document.getElementById('fraseCopiada').textContent = fraseFinal;
-        setTimeout(() => {
-          document.getElementById('mensagem').textContent = "";
-        }, 2000);
-      }).catch(() => {
-        document.getElementById('mensagem').textContent = "Erro ao copiar a frase.";
+De acordo com a cláusula 3.10.3, a ANA Gaming se reserva o direito de alterar o regulamento do Programa de Fidelidade, bem como cancelar promoções, benefícios e recompensas em casos de uso inadequado. Também nos reservamos o direito de corrigir ou cancelar transações relacionadas, caso sejam detectadas irregularidades.
+
+Após auditoria interna, verificamos que as FREEBETS disponibilizadas foram utilizadas de forma irregular, pelos seguintes motivos:
+
+As apostas realizadas com FREEBETS foram canceladas imediatamente após a realização, resultando no reembolso do valor;
+
+Foi constatado o uso de múltiplas FREEBETS decorrente de uma falha sistêmica, o que gerou reembolsos indevidos e a concessão excessiva de benefícios.
+
+Reforçamos que a FREEBET é um benefício promocional e exclusivo, destinado a proporcionar uma oportunidade única de aposta com saldo real em eventos esportivos. Sua utilização deve estar em conformidade com nossos regulamentos, sendo vedado qualquer uso que caracterize vantagem indevida.
+
+Dessa forma, informamos que sua conta está sendo suspensa, conforme previsto em nossos Termos e Condições:
+
+Cláusula 4.4 – A ANA Gaming poderá suspender temporariamente a conta do usuário caso o serviço seja utilizado para fins não autorizados ou em desacordo com os Termos, reservando-se, ainda, o direito de adotar as medidas legais cabíveis.
+
+4.4.1 – Em caso de suspensão, o usuário será notificado por e-mail e terá o prazo de 7 (sete) dias corridos para apresentar sua manifestação, exercendo seu direito ao contraditório e à ampla defesa. Caso não haja resposta dentro desse período, poderemos prosseguir com o encerramento definitivo da conta.
+
+4.4.2 – Havendo manifestação dentro do prazo, os argumentos apresentados serão analisados internamente em até 30 (trinta) dias corridos, e uma resposta será encaminhada ao usuário.
+
+Agradecemos pela compreensão.
+
+Atenciosamente,
+Equipe ANA Gaming`];
+
+    let currentType = "jira";
+
+    // Adiciona eventos aos botões de tipo
+    document.querySelectorAll('.type-button').forEach(button => {
+      button.addEventListener('click', function() {
+        // Remove a classe active de todos os botões
+        document.querySelectorAll('.type-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        // Adiciona a classe active apenas ao botão clicado
+        this.classList.add('active');
+        currentType = this.dataset.type;
       });
+    });
+
+    function gerarFrase() {
+      const fraseBox = document.getElementById("frase");
+      const frases = currentType === "jira" ? frasesJira : frasesRisco;
+      const frase = frases[Math.floor(Math.random() * frases.length)];
+
+      fraseBox.textContent = frase;
     }
   </script>
 </body>
