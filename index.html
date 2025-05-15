@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Gerador de Frases com Hora Atual</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico"> <!-- FAVICON AQUI -->
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -158,3 +157,167 @@
   </style>
 </head>
 <body>
+  <div class="container">
+    <button id="darkModeBtn">🌙 Dark Mode</button>
+    <img src="anagaming.jpg" class="logo" alt="Logo ANA Gaming" onerror="this.style.display='none'">
+    <h2>Gerador de Frases com Hora Atual</h2>
+    
+    <input type="text" id="busca" placeholder="Buscar frases...">
+    
+    <div class="dropdown">
+      <button onclick="toggleDropdown()" class="main-btn">Selecione o Tipo de Frase ▼</button>
+      <div id="dropdownContent" class="dropdown-content">
+        <button onclick="selectSection('jira')">Frases Jira</button>
+        <button onclick="selectSection('risco')">Frases Risco</button>
+      </div>
+    </div>
+    
+    <div id="jiraButtons" class="jira-buttons">
+      <button onclick="copiarFrase(0)">Creditação rodadas grátis (erro)</button>
+      <button onclick="copiarFrase(1)">Creditação erro gerais</button>
+      <button onclick="copiarFrase(2)">Creditação sem erro</button>
+      <button onclick="copiarFrase(3)">Fechar CDT - Resposta passada no e-mail</button>
+      <button onclick="copiarFrase(4)">CDT Bloqueio</button>
+    </div>
+    
+    <div id="riscoButtons" class="risco-buttons">
+      <button onclick="copiarFraseRisco()">Comunicado Bloqueio</button>
+    </div>
+    
+    <div id="mensagem"></div>
+    <div id="fraseCopiada"></div>
+  </div>
+
+  <script>
+    const frasesBase = [
+      "O erro foi identificado e a creditação manual da indicação de forma compensatória foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
+      "O erro foi identificado e a creditação foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
+      "A creditação foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
+      "Tratativa passada ao cliente via e-mail de risco. Operação concluída às HORA do dia DATA. ✅",
+      "Usuário auto-excluído. Operação concluída às HORA do dia DATA. ✅"
+    ];
+
+    const fraseRisco = Prezado(a) Cliente,
+
+Conforme previsto em nossos Termos e Condições, identificamos o uso indevido da oferta de FREEBETS.
+
+De acordo com a cláusula 3.10.3, a ANA Gaming se reserva o direito de alterar o regulamento do Programa de Fidelidade, bem como cancelar promoções, benefícios e recompensas em casos de uso inadequado. Também nos reservamos o direito de corrigir ou cancelar transações relacionadas, caso sejam detectadas irregularidades.
+
+Após auditoria interna, verificamos que as FREEBETS disponibilizadas foram utilizadas de forma irregular, pelos seguintes motivos:
+
+As apostas realizadas com FREEBETS foram canceladas imediatamente após a realização, resultando no reembolso do valor;
+
+Foi constatado o uso de múltiplas FREEBETS decorrente de uma falha sistêmica, o que gerou reembolsos indevidos e a concessão excessiva de benefícios.
+
+Reforçamos que a FREEBET é um benefício promocional e exclusivo, destinado a proporcionar uma oportunidade única de aposta com saldo real em eventos esportivos. Sua utilização deve estar em conformidade com nossos regulamentos, sendo vedado qualquer uso que caracterize vantagem indevida.
+
+Dessa forma, informamos que sua conta está sendo suspensa, conforme previsto em nossos Termos e Condições:
+
+Cláusula 4.4 – A ANA Gaming poderá suspender temporariamente a conta do usuário caso o serviço seja utilizado para fins não autorizados ou em desacordo com os Termos, reservando-se, ainda, o direito de adotar as medidas legais cabíveis.
+
+4.4.1 – Em caso de suspensão, o usuário será notificado por e-mail e terá o prazo de 7 (sete) dias corridos para apresentar sua manifestação, exercendo seu direito ao contraditório e à ampla defesa. Caso não haja resposta dentro desse período, poderemos prosseguir com o encerramento definitivo da conta.
+
+4.4.2 – Havendo manifestação dentro do prazo, os argumentos apresentados serão analisados internamente em até 30 (trinta) dias corridos, e uma resposta será encaminhada ao usuário.
+
+Agradecemos pela compreensão.
+
+Atenciosamente,
+Equipe ANA Gaming;
+
+    // Dark Mode
+    document.getElementById('darkModeBtn').addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    });
+
+    // Verificar preferência de dark mode ao carregar
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark-mode');
+    }
+
+    // Busca por frases
+    document.getElementById('busca').addEventListener('input', (e) => {
+      const termo = e.target.value.toLowerCase();
+      const buttons = document.querySelectorAll('#jiraButtons button, #riscoButtons button');
+      
+      buttons.forEach(btn => {
+        const textoBtn = btn.textContent.toLowerCase();
+        btn.style.display = textoBtn.includes(termo) ? 'block' : 'none';
+      });
+    });
+
+    function toggleDropdown() {
+      document.getElementById("dropdownContent").classList.toggle("show");
+    }
+
+    function selectSection(section) {
+      document.getElementById("dropdownContent").classList.remove("show");
+      const mainBtn = document.querySelector(".main-btn");
+      mainBtn.textContent = section === 'jira' ? 'Frases Jira ▼' : 'Frases Risco ▼';
+      
+      document.getElementById("jiraButtons").classList.remove("active-section");
+      document.getElementById("riscoButtons").classList.remove("active-section");
+      document.getElementById(section + "Buttons").classList.add("active-section");
+      
+      // Disparar evento de busca novamente para aplicar filtro na nova seção
+      document.getElementById('busca').dispatchEvent(new Event('input'));
+    }
+
+    function getCurrentDateTime() {
+      const agora = new Date();
+      const hora = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      const dia = agora.getDate().toString().padStart(2, '0');
+      const mes = (agora.getMonth() + 1).toString().padStart(2, '0');
+      const ano = agora.getFullYear();
+      return { hora, data: ${dia}/${mes}/${ano} };
+    }
+
+    function copiarFrase(indice) {
+      const { hora, data } = getCurrentDateTime();
+      const fraseFinal = frasesBase[indice]
+        .replace('HORA', hora)
+        .replace('DATA', data);
+
+      copyToClipboard(fraseFinal);
+    }
+
+    function copiarFraseRisco() {
+      copyToClipboard(fraseRisco);
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const msg = document.getElementById('mensagem');
+        msg.textContent = "Frase copiada com sucesso!";
+        msg.classList.add('show');
+        
+        document.getElementById('fraseCopiada').textContent = text;
+        
+        setTimeout(() => {
+          msg.classList.remove('show');
+        }, 2000);
+      }).catch(() => {
+        const msg = document.getElementById('mensagem');
+        msg.textContent = "Erro ao copiar a frase.";
+        msg.classList.add('show');
+      });
+    }
+
+    // Fechar dropdown ao clicar fora
+    window.onclick = function(event) {
+      if (!event.target.matches('.main-btn')) {
+        const dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+          const openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+
+    // Inicializar com Frases Jira
+    selectSection('jira');
+  </script>
+</body>
+</html>
