@@ -197,7 +197,7 @@
       "Usuário auto-excluído. Operação concluída às HORA do dia DATA. ✅"
     ];
 
-    const fraseRisco = Prezado(a) Cliente,
+    const fraseRisco = `Prezado(a) Cliente,
 
 Conforme previsto em nossos Termos e Condições, identificamos o uso indevido da oferta de FREEBETS.
 
@@ -222,7 +222,7 @@ Cláusula 4.4 – A ANA Gaming poderá suspender temporariamente a conta do usu�
 Agradecemos pela compreensão.
 
 Atenciosamente,
-Equipe ANA Gaming;
+Equipe ANA Gaming`;
 
     // Dark Mode
     document.getElementById('darkModeBtn').addEventListener('click', () => {
@@ -269,7 +269,7 @@ Equipe ANA Gaming;
       const dia = agora.getDate().toString().padStart(2, '0');
       const mes = (agora.getMonth() + 1).toString().padStart(2, '0');
       const ano = agora.getFullYear();
-      return { hora, data: ${dia}/${mes}/${ano} };
+      return { hora, data: `${dia}/${mes}/${ano}` };
     }
 
     function copiarFrase(indice) {
