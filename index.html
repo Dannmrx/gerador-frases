@@ -1,198 +1,382 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Gerador de Frases</title>
-  <!-- Ícone da aba (favicon) -->
-  <link rel="icon" href="favicon.png" type="image/png">
-  <link rel="shortcut icon" href="favicon.png" type="image/png">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de Frases | ANA Gaming</title>
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* ===== VARIÁVEIS ===== */
+    :root {
+      --primary: #4361ee;
+      --primary-light: #4895ef;
+      --primary-dark: #3a0ca3;
+      --secondary: #f72585;
+      --success: #4cc9f0;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+      --white: #ffffff;
+      
+      --bg-color: #f5f7fa;
+      --card-bg: var(--white);
+      --text-color: var(--dark);
+      --border-color: #dee2e6;
+      
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    /* ===== DARK MODE ===== */
+    .dark-mode {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #e0e0e0;
+      --border-color: #333;
+      
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.5);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.4);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.3);
+    }
+
+    /* ===== BASE STYLES ===== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 40px;
-      background-color: #f0f0f0;
-      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 2rem;
+      transition: var(--transition);
     }
-    body.dark-mode {
-      background-color: #222;
-      color: #fff;
-    }
+
     .container {
-      background-color: #fff;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      display: inline-block;
-      max-width: 700px;
-      transition: all 0.3s ease;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
     }
-    .dark-mode .container {
-      background-color: #333;
-      box-shadow: 0 0 10px rgba(255,255,255,0.1);
-    }
-    img.logo {
-      max-width: 200px;
-      margin-bottom: 20px;
-    }
-    button {
-      display: block;
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      margin: 10px 0;
-      padding: 12px;
-      font-size: 1em;
-      background-color: #007bff;
-      color: white;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    h2 {
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 1.75rem;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo {
+      max-width: 180px;
+      height: auto;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    /* ===== FORM ELEMENTS ===== */
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    /* ===== DROPDOWN ===== */
+    .dropdown {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .dropdown-btn {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
       border: none;
-      border-radius: 8px;
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-weight: 500;
+      text-align: left;
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
     }
-    button:hover {
-      background-color: #0056b3;
+
+    .dropdown-btn:hover {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
-    .dark-mode button {
-      background-color: #555;
+
+    .dropdown-btn:active {
+      transform: translateY(0);
     }
-    .dark-mode button:hover {
-      background-color: #777;
+
+    .dropdown-content {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: var(--card-bg);
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      z-index: 10;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
     }
-    #mensagem {
-      margin-top: 20px;
-      font-weight: bold;
-      color: green;
+
+    .dropdown-content.show {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .dropdown-item {
+      padding: 0.75rem 1rem;
+      color: var(--text-color);
+      background-color: var(--card-bg);
+      border: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: var(--transition);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown-item:hover {
+      background-color: var(--primary);
+      color: var(--white);
+    }
+
+    /* ===== BUTTONS SECTION ===== */
+    .section-buttons {
+      display: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-buttons.active {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .phrase-btn {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      margin-bottom: 0.75rem;
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .phrase-btn:hover {
+      border-color: var(--primary);
+      transform: translateX(5px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ===== MESSAGE & OUTPUT ===== */
+    .alert {
+      padding: 0.875rem 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      text-align: center;
       opacity: 0;
       transform: translateY(-10px);
-      transition: all 0.3s ease;
+      transition: var(--transition);
     }
-    #mensagem.show {
+
+    .alert.show {
       opacity: 1;
       transform: translateY(0);
     }
-    #fraseCopiada {
-      margin-top: 20px;
-      padding: 15px;
-      background-color: #f8f8f8;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-style: italic;
+
+    .alert-success {
+      background-color: rgba(76, 201, 240, 0.2);
+      color: var(--success);
+      border: 1px solid rgba(76, 201, 240, 0.3);
+    }
+
+    .output-box {
+      width: 100%;
+      padding: 1rem;
+      background-color: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      min-height: 120px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-size: 0.9375rem;
+      line-height: 1.6;
       white-space: pre-wrap;
-      transition: all 0.3s ease;
+      transition: var(--transition);
     }
-    .dark-mode #fraseCopiada {
-      background-color: #444;
-      border-color: #666;
+
+    .output-box:focus {
+      outline: none;
+      border-color: var(--primary);
     }
-    .dropdown {
-      position: relative;
-      display: inline-block;
-      width: 100%;
-    }
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #f9f9f9;
-      width: 100%;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 1;
-      border-radius: 0 0 8px 8px;
-    }
-    .dark-mode .dropdown-content {
-      background-color: #444;
-    }
-    .dropdown-content button {
-      background-color: #f1f1f1;
-      color: black;
-      text-align: left;
-      border-radius: 0;
-    }
-    .dark-mode .dropdown-content button {
-      background-color: #555;
-      color: white;
-    }
-    .dropdown-content button:hover {
-      background-color: #ddd;
-    }
-    .dark-mode .dropdown-content button:hover {
-      background-color: #666;
-    }
-    .show {
-      display: block;
-    }
-    .main-btn {
-      background-color: #4CAF50 !important;
-    }
-    .dark-mode .main-btn {
-      background-color: #2E7D32 !important;
-    }
-    .jira-buttons, .risco-buttons {
-      display: none;
-    }
-    .active-section {
-      display: block;
-    }
-    #busca {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1em;
-    }
-    .dark-mode #busca {
-      background-color: #444;
-      color: white;
-      border-color: #666;
-    }
-    #darkModeBtn {
+
+    /* ===== DARK MODE TOGGLE ===== */
+    .dark-mode-toggle {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      width: auto;
-      padding: 8px 15px;
-      background-color: #333;
-      color: white;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
     }
-    .dark-mode #darkModeBtn {
-      background-color: #f0f0f0;
-      color: #333;
+
+    .dark-mode-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+      
+      .container {
+        padding: 1.5rem;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      .dark-mode-toggle {
+        top: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <button id="darkModeBtn">🌙 Dark Mode</button>
-    <img src="anagaming.jpg" class="logo" alt="Logo ANA Gaming" onerror="this.style.display='none'">
+  <button class="dark-mode-toggle" id="darkModeBtn" title="Alternar modo escuro" aria-pressed="false">
+    <span id="darkModeIcon">🌙</span>
+  </button>
+  
+  <div class="container" role="main" aria-label="Gerador de frases ANA Gaming">
+    <div class="logo-container">
+      <img src="anagaming.jpg" class="logo" alt="Logo ANA Gaming" onerror="this.style.display='none'" />
+    </div>
+    
     <h2>Gerador de Frases com Hora Atual</h2>
-    
-    <input type="text" id="busca" placeholder="Buscar frases...">
-    
+
+    <div class="input-group">
+      <input type="text" id="busca" class="search-input" placeholder="🔍 Buscar frases..." title="Digite para filtrar as frases" aria-label="Busca de frases" />
+    </div>
+
     <div class="dropdown">
-      <button onclick="toggleDropdown()" class="main-btn">Selecione o Tipo de Frase ▼</button>
-      <div id="dropdownContent" class="dropdown-content">
-        <button onclick="selectSection('jira')">Frases Jira</button>
-        <button onclick="selectSection('risco')">Frases Risco</button>
+      <button class="dropdown-btn" id="dropdownBtn" aria-haspopup="true" aria-expanded="false" aria-controls="dropdownContent" title="Selecionar tipo de frase">
+        <span id="dropdownText">Selecione o Tipo de Frase</span>
+        <span id="dropdownArrow">▼</span>
+      </button>
+      <div id="dropdownContent" class="dropdown-content" role="menu" aria-labelledby="dropdownBtn">
+        <button class="dropdown-item" onclick="selectSection('jira')" type="button" role="menuitem" title="Mostrar frases Jira">Frases Jira</button>
+        <button class="dropdown-item" onclick="selectSection('risco')" type="button" role="menuitem" title="Mostrar frases Risco">Frases Risco</button>
       </div>
     </div>
-    
-    <div id="jiraButtons" class="jira-buttons">
-      <button onclick="copiarFrase(0)">Creditação rodadas grátis (erro)</button>
-      <button onclick="copiarFrase(1)">Creditação erro gerais</button>
-      <button onclick="copiarFrase(2)">Creditação sem erro</button>
-      <button onclick="copiarFrase(3)">Fechar CDT - Resposta passada no e-mail</button>
-      <button onclick="copiarFrase(4)">CDT Bloqueio</button>
+
+    <div id="jiraButtons" class="section-buttons" aria-live="polite">
+      <button class="phrase-btn" onclick="copiarFrase(0)" title="Creditação rodadas grátis (erro)">Creditação rodadas grátis (erro)</button>
+      <button class="phrase-btn" onclick="copiarFrase(1)" title="Creditação erro gerais">Creditação erro gerais</button>
+      <button class="phrase-btn" onclick="copiarFrase(2)" title="Creditação sem erro">Creditação sem erro</button>
+      <button class="phrase-btn" onclick="copiarFrase(3)" title="Fechar CDT - Resposta passada no e-mail">Fechar CDT - Resposta passada no e-mail</button>
+      <button class="phrase-btn" onclick="copiarFrase(4)" title="CDT Bloqueio">CDT Bloqueio</button>
     </div>
-    
-    <div id="riscoButtons" class="risco-buttons">
-      <button onclick="copiarFraseRisco()">Comunicado Bloqueio</button>
+
+    <div id="riscoButtons" class="section-buttons" aria-live="polite">
+      <button class="phrase-btn" onclick="copiarFraseRisco()" title="Comunicado Bloqueio">Comunicado Bloqueio</button>
+      <button class="phrase-btn" onclick="copiarFraseSolicitarEmail()" title="Solicitar novo e-mail">Solicitar novo e-mail</button>
     </div>
-    
-    <div id="mensagem"></div>
-    <div id="fraseCopiada"></div>
+
+    <div id="mensagem" class="alert" aria-live="assertive" role="alert"></div>
+    <div id="fraseCopiada" class="output-box" aria-live="polite" tabindex="0"></div>
   </div>
 
   <script>
+    // ===== DADOS DAS FRASES =====
     const frasesBase = [
       "O erro foi identificado e a creditação manual da indicação de forma compensatória foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
       "O erro foi identificado e a creditação foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
@@ -209,9 +393,8 @@ De acordo com a cláusula 3.10.3, a ANA Gaming se reserva o direito de alterar o
 
 Após auditoria interna, verificamos que as FREEBETS disponibilizadas foram utilizadas de forma irregular, pelos seguintes motivos:
 
-As apostas realizadas com FREEBETS foram canceladas imediatamente após a realização, resultando no reembolso do valor;
-
-Foi constatado o uso de múltiplas FREEBETS decorrente de uma falha sistêmica, o que gerou reembolsos indevidos e a concessão excessiva de benefícios.
+• As apostas realizadas com FREEBETS foram canceladas imediatamente após a realização, resultando no reembolso do valor;
+• Foi constatado o uso de múltiplas FREEBETS decorrente de uma falha sistêmica, o que gerou reembolsos indevidos e a concessão excessiva de benefícios.
 
 Reforçamos que a FREEBET é um benefício promocional e exclusivo, destinado a proporcionar uma oportunidade única de aposta com saldo real em eventos esportivos. Sua utilização deve estar em conformidade com nossos regulamentos, sendo vedado qualquer uso que caracterize vantagem indevida.
 
@@ -228,100 +411,179 @@ Agradecemos pela compreensão.
 Atenciosamente,
 Equipe ANA Gaming`;
 
-    // Dark Mode
-    document.getElementById('darkModeBtn').addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-    });
+    const fraseSolicitarEmail = `Prezado(a) Francisca,
 
-    // Verificar preferência de dark mode ao carregar
-    if (localStorage.getItem('darkMode') === 'true') {
-      document.body.classList.add('dark-mode');
-    }
+Agradecemos pela confirmação do seu KYC. Sua colaboração é muito importante para mantermos seus dados atualizados e garantir a segurança de sua conta.
 
-    // Busca por frases
-    document.getElementById('busca').addEventListener('input', (e) => {
-      const termo = e.target.value.toLowerCase();
-      const buttons = document.querySelectorAll('#jiraButtons button, #riscoButtons button');
-      
-      buttons.forEach(btn => {
-        const textoBtn = btn.textContent.toLowerCase();
-        btn.style.display = textoBtn.includes(termo) ? 'block' : 'none';
-      });
-    });
+Aproveitamos para solicitar, por gentileza, que nos informe o novo e-mail que deseja cadastrar. Assim que recebemos essa informação, faremos a atualização em nosso sistema imediatamente.
 
+Ficamos à disposição para quaisquer dúvidas ou esclarecimentos.
+
+Atenciosamente,
+Equipe ANA Gaming`;
+
+    // ===== ELEMENTOS DO DOM =====
+    const dropdownBtn = document.getElementById('dropdownBtn');
+    const dropdownContent = document.getElementById('dropdownContent');
+    const dropdownText = document.getElementById('dropdownText');
+    const jiraButtons = document.getElementById('jiraButtons');
+    const riscoButtons = document.getElementById('riscoButtons');
+    const mensagem = document.getElementById('mensagem');
+    const fraseCopiada = document.getElementById('fraseCopiada');
+    const buscaInput = document.getElementById('busca');
+    const darkModeBtn = document.getElementById('darkModeBtn');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+
+    let currentSection = 'jira';
+
+    // ===== FUNÇÕES =====
     function toggleDropdown() {
-      document.getElementById("dropdownContent").classList.toggle("show");
+      const expanded = dropdownBtn.getAttribute('aria-expanded') === 'true';
+      dropdownBtn.setAttribute('aria-expanded', String(!expanded));
+      dropdownContent.classList.toggle('show');
+      
+      // Animação do ícone
+      const arrow = document.getElementById('dropdownArrow');
+      arrow.style.transform = expanded ? 'rotate(0deg)' : 'rotate(180deg)';
     }
 
     function selectSection(section) {
-      document.getElementById("dropdownContent").classList.remove("show");
-      const mainBtn = document.querySelector(".main-btn");
-      mainBtn.textContent = section === 'jira' ? 'Frases Jira ▼' : 'Frases Risco ▼';
+      currentSection = section;
+      const sectionName = section === 'jira' ? "Frases Jira" : "Frases Risco";
+      dropdownText.textContent = sectionName;
+      dropdownBtn.setAttribute('aria-expanded', 'false');
+      dropdownContent.classList.remove('show');
+      document.getElementById('dropdownArrow').style.transform = 'rotate(0deg)';
+
+      // Mostra a seção selecionada e esconde a outra
+      if (section === 'jira') {
+        jiraButtons.style.display = 'block';
+        riscoButtons.style.display = 'none';
+      } else {
+        jiraButtons.style.display = 'none';
+        riscoButtons.style.display = 'block';
+      }
       
-      document.getElementById("jiraButtons").classList.remove("active-section");
-      document.getElementById("riscoButtons").classList.remove("active-section");
-      document.getElementById(section + "Buttons").classList.add("active-section");
-      
-      // Disparar evento de busca novamente para aplicar filtro na nova seção
-      document.getElementById('busca').dispatchEvent(new Event('input'));
+      buscaInput.value = "";
+      filtrarBotoes();
+      mensagem.textContent = "";
+      mensagem.classList.remove('show');
+      fraseCopiada.textContent = "";
     }
 
     function getCurrentDateTime() {
       const agora = new Date();
-      const hora = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-      const dia = agora.getDate().toString().padStart(2, '0');
-      const mes = (agora.getMonth() + 1).toString().padStart(2, '0');
+      const hora = agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+      const dia = String(agora.getDate()).padStart(2, "0");
+      const mes = String(agora.getMonth() + 1).padStart(2, "0");
       const ano = agora.getFullYear();
       return { hora, data: `${dia}/${mes}/${ano}` };
     }
 
     function copiarFrase(indice) {
       const { hora, data } = getCurrentDateTime();
-      const fraseFinal = frasesBase[indice]
-        .replace('HORA', hora)
-        .replace('DATA', data);
-
-      copyToClipboard(fraseFinal);
+      const frase = frasesBase[indice]
+        .replace("HORA", hora)
+        .replace("DATA", data);
+      copiarTexto(frase);
     }
 
     function copiarFraseRisco() {
-      copyToClipboard(fraseRisco);
+      copiarTexto(fraseRisco);
     }
 
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        const msg = document.getElementById('mensagem');
-        msg.textContent = "Frase copiada com sucesso!";
-        msg.classList.add('show');
-        
-        document.getElementById('fraseCopiada').textContent = text;
-        
-        setTimeout(() => {
-          msg.classList.remove('show');
-        }, 2000);
-      }).catch(() => {
-        const msg = document.getElementById('mensagem');
-        msg.textContent = "Erro ao copiar a frase.";
-        msg.classList.add('show');
+    function copiarFraseSolicitarEmail() {
+      copiarTexto(fraseSolicitarEmail);
+    }
+
+    function copiarTexto(texto) {
+      navigator.clipboard.writeText(texto)
+        .then(() => {
+          mensagem.textContent = "✅ Frase copiada com sucesso!";
+          mensagem.className = "alert alert-success show";
+          fraseCopiada.textContent = texto;
+          fraseCopiada.focus();
+          
+          setTimeout(() => {
+            mensagem.classList.remove('show');
+          }, 3000);
+        })
+        .catch(() => {
+          mensagem.textContent = "⚠️ Falha ao copiar. Tente manualmente.";
+          mensagem.className = "alert show";
+          
+          setTimeout(() => {
+            mensagem.classList.remove('show');
+          }, 3000);
+        });
+    }
+
+    function filtrarBotoes() {
+      const filtro = buscaInput.value.toLowerCase();
+      let botoesVisiveis = 0;
+
+      const buttonsContainer = currentSection === 'jira' ? jiraButtons : riscoButtons;
+      const botoes = buttonsContainer.querySelectorAll('.phrase-btn');
+      
+      botoes.forEach(btn => {
+        const matchesFilter = btn.textContent.toLowerCase().includes(filtro);
+        btn.style.display = matchesFilter ? "block" : "none";
+        if (matchesFilter) botoesVisiveis++;
       });
-    }
 
-    // Fechar dropdown ao clicar fora
-    window.onclick = function(event) {
-      if (!event.target.matches('.main-btn')) {
-        const dropdowns = document.getElementsByClassName("dropdown-content");
-        for (let i = 0; i < dropdowns.length; i++) {
-          const openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-          }
-        }
+      if (botoesVisiveis === 0) {
+        mensagem.textContent = "🔍 Nenhuma frase encontrada para essa busca.";
+        mensagem.className = "alert show";
+      } else {
+        mensagem.textContent = "";
+        mensagem.classList.remove('show');
       }
     }
 
-    // Inicializar com Frases Jira
-    selectSection('jira');
+    function setDarkMode(dark) {
+      document.body.classList.toggle('dark-mode', dark);
+      darkModeIcon.textContent = dark ? "☀️" : "🌙";
+      darkModeBtn.setAttribute('aria-pressed', String(dark));
+      localStorage.setItem('darkMode', dark ? '1' : '0');
+      
+      // Adiciona efeito de brilho ao alternar
+      darkModeBtn.style.boxShadow = dark 
+        ? '0 0 15px rgba(255, 255, 255, 0.5)'
+        : '0 0 15px rgba(67, 97, 238, 0.5)';
+      
+      setTimeout(() => {
+        darkModeBtn.style.boxShadow = 'var(--shadow-md)';
+      }, 500);
+    }
+
+    // ===== EVENT LISTENERS =====
+    dropdownBtn.addEventListener('click', toggleDropdown);
+    buscaInput.addEventListener('input', filtrarBotoes);
+
+    window.addEventListener('click', (e) => {
+      if (!dropdownBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+        dropdownBtn.setAttribute('aria-expanded', 'false');
+        dropdownContent.classList.remove('show');
+        document.getElementById('dropdownArrow').style.transform = 'rotate(0deg)';
+      }
+    });
+
+    darkModeBtn.addEventListener('click', () => {
+      const isDark = document.body.classList.contains('dark-mode');
+      setDarkMode(!isDark);
+    });
+
+    // ===== INICIALIZAÇÃO =====
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedDarkMode = localStorage.getItem('darkMode') === '1';
+      setDarkMode(savedDarkMode);
+      
+      // Mostrar a seção Jira por padrão ao carregar
+      selectSection('jira');
+      
+      // Adiciona animação ao carregar
+      document.querySelector('.container').style.animation = 'fadeIn 0.5s ease-out';
+    });
   </script>
 </body>
 </html>
