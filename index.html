@@ -59,11 +59,20 @@
     body {
       font-family: 'Poppins', sans-serif;
       background-color: var(--bg-color);
+      background-image: linear-gradient(rgba(245, 247, 250, 0.85), rgba(245, 247, 250, 0.85)), url('https://source.unsplash.com/random/1920x1080/?gaming,abstract');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
       color: var(--text-color);
       line-height: 1.6;
       min-height: 100vh;
       padding: 2rem;
       transition: var(--transition);
+    }
+
+    .dark-mode {
+      background-image: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.9)), url('https://source.unsplash.com/random/1920x1080/?gaming,abstract,dark');
     }
 
     .container {
@@ -75,6 +84,7 @@
       padding: 2.5rem;
       position: relative;
       overflow: hidden;
+      backdrop-filter: blur(2px);
     }
 
     .container::before {
@@ -411,7 +421,7 @@ Agradecemos pela compreensão.
 Atenciosamente,
 Equipe ANA Gaming`;
 
-    const fraseSolicitarEmail = `Prezado(a) Cliente,
+    const fraseSolicitarEmail = `Prezado(a) Francisca,
 
 Agradecemos pela confirmação do seu KYC. Sua colaboração é muito importante para mantermos seus dados atualizados e garantir a segurança de sua conta.
 
@@ -420,7 +430,7 @@ Aproveitamos para solicitar, por gentileza, que nos informe o novo e-mail que de
 Ficamos à disposição para quaisquer dúvidas ou esclarecimentos.
 
 Atenciosamente,
-Equipe de Risco;
+Equipe ANA Gaming`;
 
     // ===== ELEMENTOS DO DOM =====
     const dropdownBtn = document.getElementById('dropdownBtn');
