@@ -2,12 +2,12 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gerador de Frases | ANA Gaming</title>
   <link rel="icon" href="favicon.png" type="image/png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ===== VARIÁVEIS ===== */
     :root {
@@ -20,20 +20,20 @@
       --dark: #212529;
       --gray: #6c757d;
       --white: #ffffff;
-
+      
       --bg-color: #f5f7fa;
       --card-bg: var(--white);
       --text-color: var(--dark);
       --border-color: #dee2e6;
-
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-
+      
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+      
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
-
+      
       --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
@@ -43,10 +43,10 @@
       --card-bg: #1e1e1e;
       --text-color: #e0e0e0;
       --border-color: #333;
-
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
-      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+      
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.5);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.4);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.3);
     }
 
     /* ===== BASE STYLES ===== */
@@ -57,13 +57,9 @@
     }
 
     body {
-      font-family: "Poppins", sans-serif;
+      font-family: 'Poppins', sans-serif;
       background-color: var(--bg-color);
-      background-image: linear-gradient(
-          rgba(245, 247, 250, 0.85),
-          rgba(245, 247, 250, 0.85)
-        ),
-        url("https://source.unsplash.com/random/1920x1080/?gaming,abstract");
+      background-image: linear-gradient(rgba(245, 247, 250, 0.85), rgba(245, 247, 250, 0.85)), url('https://source.unsplash.com/random/1920x1080/?gaming,abstract');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -76,11 +72,7 @@
     }
 
     .dark-mode {
-      background-image: linear-gradient(
-          rgba(18, 18, 18, 0.9),
-          rgba(18, 18, 18, 0.9)
-        ),
-        url("https://source.unsplash.com/random/1920x1080/?gaming,abstract,dark");
+      background-image: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.9)), url('https://source.unsplash.com/random/1920x1080/?gaming,abstract,dark');
     }
 
     .container {
@@ -96,7 +88,7 @@
     }
 
     .container::before {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
@@ -122,7 +114,7 @@
     .logo {
       max-width: 180px;
       height: auto;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
 
     /* ===== FORM ELEMENTS ===== */
@@ -223,7 +215,13 @@
 
     /* ===== BUTTONS SECTION ===== */
     .section-buttons {
+      display: none;
       margin-bottom: 1.5rem;
+    }
+
+    .section-buttons.active {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
     }
 
     .phrase-btn {
@@ -247,521 +245,392 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* ===== ADMIN EDIT SECTION ===== */
-    #adminPanel {
-      background-color: var(--card-bg);
-      border: 2px solid var(--primary);
-      padding: 1rem;
-      border-radius: var(--radius-md);
+    /* ===== MESSAGE & OUTPUT ===== */
+    .alert {
+      padding: 0.875rem 1rem;
       margin-bottom: 1.5rem;
-      display: none;
-    }
-
-    #adminPanel.show {
-      display: block;
-    }
-
-    #adminPanel h3 {
-      margin-bottom: 1rem;
-      color: var(--primary);
+      border-radius: var(--radius-md);
+      font-weight: 500;
       text-align: center;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: var(--transition);
     }
 
-    #newPhraseInput {
+    .alert.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .alert-success {
+      background-color: rgba(76, 201, 240, 0.2);
+      color: var(--success);
+      border: 1px solid rgba(76, 201, 240, 0.3);
+    }
+
+    .output-box {
       width: 100%;
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
+      padding: 1rem;
+      background-color: var(--card-bg);
       border: 2px solid var(--border-color);
       border-radius: var(--radius-md);
-      margin-bottom: 1rem;
-    }
-
-    #addPhraseBtn {
-      background-color: var(--primary);
-      color: var(--white);
-      padding: 0.75rem 1rem;
-      border: none;
-      border-radius: var(--radius-md);
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
+      min-height: 120px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
       transition: var(--transition);
     }
 
-    #addPhraseBtn:hover {
-      background-color: var(--primary-dark);
-    }
-
-    .editable-phrase {
-      display: flex;
-      margin-bottom: 0.5rem;
-      gap: 0.5rem;
-    }
-
-    .editable-phrase input {
-      flex-grow: 1;
-      padding: 0.5rem 0.75rem;
-      font-size: 1rem;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-    }
-
-    .editable-phrase button {
-      background-color: var(--secondary);
-      border: none;
-      color: var(--white);
-      font-weight: 700;
-      padding: 0 12px;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .editable-phrase button:hover {
-      background-color: #c2135b;
-    }
-
-    /* ===== LOGIN SCREEN ===== */
-    #loginScreen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(33, 37, 41, 0.9);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      padding: 1rem;
-    }
-
-    #loginBox {
-      background-color: var(--card-bg);
-      padding: 2rem 2.5rem;
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
-      width: 320px;
-    }
-
-    #loginBox h2 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      color: var(--primary);
-    }
-
-    #loginBox input {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      margin-bottom: 1rem;
-      font-size: 1rem;
-      border: 2px solid var(--border-color);
-      border-radius: var(--radius-md);
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      transition: var(--transition);
-    }
-
-    #loginBox input:focus {
-      border-color: var(--primary);
+    .output-box:focus {
       outline: none;
-    }
-
-    #loginBtn {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      background-color: var(--primary);
-      border: none;
-      border-radius: var(--radius-md);
-      color: var(--white);
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    #loginBtn:hover {
-      background-color: var(--primary-dark);
-    }
-
-    #loginError {
-      color: #ff4d4f;
-      font-weight: 700;
-      margin-top: 0.5rem;
-      text-align: center;
-      display: none;
+      border-color: var(--primary);
     }
 
     /* ===== DARK MODE TOGGLE ===== */
-    #darkModeToggle {
+    .dark-mode-toggle {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: var(--primary);
-      border: none;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      cursor: pointer;
-      box-shadow: var(--shadow-md);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: var(--transition);
+      background-color: var(--primary);
       color: var(--white);
-      font-size: 1.5rem;
-      user-select: none;
-      z-index: 999;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
     }
 
-    #darkModeToggle:hover {
-      background-color: var(--primary-dark);
+    .dark-mode-toggle:hover {
       transform: scale(1.1);
     }
 
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+      
+      .container {
+        padding: 1.5rem;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      .dark-mode-toggle {
+        top: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div id="loginScreen">
-    <div id="loginBox">
-      <h2>Login Admin</h2>
-      <input type="text" id="username" placeholder="Usuário" autocomplete="off" />
-      <input type="password" id="password" placeholder="Senha" autocomplete="off" />
-      <button id="loginBtn">Entrar</button>
-      <div id="loginError">Usuário ou senha inválidos!</div>
-    </div>
-  </div>
-
-  <div class="container" style="display:none;" id="mainContainer">
+  <button class="dark-mode-toggle" id="darkModeBtn" title="Alternar modo escuro" aria-pressed="false">
+    <span id="darkModeIcon">🌙</span>
+  </button>
+  
+  <div class="container" role="main" aria-label="Gerador de frases ANA Gaming">
     <div class="logo-container">
-      <img src="https://cdn.discordapp.com/attachments/1069944469033219184/1136147186969594940/ANA_Gaming-02.png" alt="ANA Gaming Logo" class="logo" />
+      <img src="anagaming.jpg" class="logo" alt="Logo ANA Gaming" onerror="this.style.display='none'" />
     </div>
-
-    <h2>Gerador de Frases | ANA Gaming</h2>
+    
+    <h2>Gerador de Frases com Hora Atual</h2>
 
     <div class="input-group">
-      <input
-        type="text"
-        id="searchInput"
-        class="search-input"
-        placeholder="Pesquisar frases..."
-        autocomplete="off"
-      />
+      <input type="text" id="busca" class="search-input" placeholder="🔍 Buscar frases..." title="Digite para filtrar as frases" aria-label="Busca de frases" />
     </div>
 
     <div class="dropdown">
-      <button id="dropdownBtn" class="dropdown-btn" aria-haspopup="listbox" aria-expanded="false">
-        Selecionar Categoria
-        <span>▼</span>
+      <button class="dropdown-btn" id="dropdownBtn" aria-haspopup="true" aria-expanded="false" aria-controls="dropdownContent" title="Selecionar tipo de frase">
+        <span id="dropdownText">Selecione o Tipo de Frase</span>
+        <span id="dropdownArrow">▼</span>
       </button>
-      <div id="dropdownContent" class="dropdown-content" role="listbox" tabindex="-1"></div>
+      <div id="dropdownContent" class="dropdown-content" role="menu" aria-labelledby="dropdownBtn">
+        <button class="dropdown-item" onclick="selectSection('jira')" type="button" role="menuitem" title="Mostrar frases Jira">Frases Jira</button>
+        <button class="dropdown-item" onclick="selectSection('risco')" type="button" role="menuitem" title="Mostrar frases Risco">Frases Risco</button>
+        <button class="dropdown-item" onclick="selectSection('smartico')" type="button" role="menuitem" title="Mostrar frases Smartico">Frases Smartico</button>
+      </div>
     </div>
 
-    <div class="section-buttons" id="phraseButtons"></div>
-
-    <div id="adminPanel">
-      <h3>Admin: Editar Frases</h3>
-      <input
-        type="text"
-        id="newPhraseInput"
-        placeholder="Nova frase..."
-        autocomplete="off"
-      />
-      <button id="addPhraseBtn">Adicionar Frase</button>
-      <div id="editablePhrases"></div>
+    <div id="jiraButtons" class="section-buttons" aria-live="polite">
+      <button class="phrase-btn" onclick="copiarFrase(0)" title="Creditação rodadas grátis (erro)">Creditação rodadas grátis (erro)</button>
+      <button class="phrase-btn" onclick="copiarFrase(1)" title="Creditação erro gerais">Creditação erro gerais</button>
+      <button class="phrase-btn" onclick="copiarFrase(2)" title="Creditação sem erro">Creditação sem erro</button>
+      <button class="phrase-btn" onclick="copiarFrase(3)" title="Fechar CDT - Resposta passada no e-mail">Fechar CDT - Resposta passada no e-mail</button>
+      <button class="phrase-btn" onclick="copiarFrase(4)" title="CDT Bloqueio">CDT Bloqueio</button>
     </div>
+
+    <div id="riscoButtons" class="section-buttons" aria-live="polite">
+      <button class="phrase-btn" onclick="copiarFraseRisco()" title="Comunicado Bloqueio">Comunicado Bloqueio</button>
+      <button class="phrase-btn" onclick="copiarFraseSolicitarEmail()" title="Solicitar novo e-mail">Solicitar novo e-mail</button>
+    </div>
+
+    <div id="smarticoButtons" class="section-buttons" aria-live="polite">
+      <button class="phrase-btn" onclick="copiarFraseSmartico()" title="Creditação comunicação indevida">Creditação comunicação indevida</button>
+    </div>
+
+    <div id="mensagem" class="alert" aria-live="assertive" role="alert"></div>
+    <div id="fraseCopiada" class="output-box" aria-live="polite" tabindex="0"></div>
   </div>
 
-  <button id="darkModeToggle" title="Alternar modo escuro">🌓</button>
-
   <script>
-    // === DADOS INICIAIS ===
-    const frasesPorCategoria = {
-      "Frases Jira": [
-        "Desbloqueei a conta, usuário ciente das regras e políticas.",
-        "Conta bloqueada temporariamente, em análise.",
-        "Solicitado bloqueio por suspeita de fraude.",
-        "Conta desbloqueada após confirmação de dados.",
-        "Aguardando documentação para desbloqueio.",
-      ],
-      "Frases Risco": [
-        "Alerta de risco ativado para o usuário.",
-        "Monitoramento contínuo solicitado.",
-        "Suspensão preventiva aplicada.",
-        "Análise de risco concluída, pendente aprovação.",
-      ],
-      "Frases Smartico": [
-        "Campanha Smartico iniciada.",
-        "Usuário elegível para oferta Smartico.",
-        "Configuração de Smartico atualizada.",
-      ],
-    };
+    // ===== DADOS DAS FRASES =====
+    const frasesBase = [
+      "O erro foi identificado e a creditação manual da indicação de forma compensatória foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
+      "O erro foi identificado e a creditação foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
+      "A creditação foi realizada de forma manual. A operação foi realizada com sucesso às HORA do dia DATA. ✅",
+      "Tratativa passada ao cliente via e-mail de risco. Operação concluída às HORA do dia DATA. ✅",
+      "Usuário auto-excluído. Operação concluída às HORA do dia DATA. ✅"
+    ];
 
-    // === ESTADOS ===
-    let categorias = Object.keys(frasesPorCategoria);
-    let frasesAtuais = [];
-    let categoriaAtual = categorias[0];
-    let dropdownAberto = false;
-    let usuarioLogado = null; // null ou "admin"
+    const fraseRisco = `Prezado(a) Cliente,
 
-    // TENTAR CARREGAR frases salvas localStorage
-    if (localStorage.getItem("frasesSalvas")) {
-      try {
-        const salvas = JSON.parse(localStorage.getItem("frasesSalvas"));
-        // Mesclar ou substituir frasesPorCategoria (mantendo categorias)
-        for (const cat in salvas) {
-          if (frasesPorCategoria[cat]) {
-            frasesPorCategoria[cat] = salvas[cat];
-          } else {
-            frasesPorCategoria[cat] = salvas[cat];
-            categorias.push(cat);
-          }
-        }
-      } catch {}
+Conforme previsto em nossos Termos e Condições, identificamos o uso indevido da oferta de FREEBETS.
+
+De acordo com a cláusula 3.10.3, a ANA Gaming se reserva o direito de alterar o regulamento do Programa de Fidelidade, bem como cancelar promoções, benefícios e recompensas em casos de uso inadequado. Também nos reservamos o direito de corrigir ou cancelar transações relacionadas, caso sejam detectadas irregularidades.
+
+Após auditoria interna, verificamos que as FREEBETS disponibilizadas foram utilizadas de forma irregular, pelos seguintes motivos:
+
+• As apostas realizadas com FREEBETS foram canceladas imediatamente após a realização, resultando no reembolso do valor;
+• Foi constatado o uso de múltiplas FREEBETS decorrente de uma falha sistêmica, o que gerou reembolsos indevidos e a concessão excessiva de benefícios.
+
+Reforçamos que a FREEBET é um benefício promocional e exclusivo, destinado a proporcionar uma oportunidade única de aposta com saldo real em eventos esportivos. Sua utilização deve estar em conformidade com nossos regulamentos, sendo vedado qualquer uso que caracterize vantagem indevida.
+
+Dessa forma, informamos que sua conta está sendo suspensa, conforme previsto em nossos Termos e Condições:
+
+Cláusula 4.4 – A ANA Gaming poderá suspender temporariamente a conta do usuário caso o serviço seja utilizado para fins não autorizados ou em desacordo com os Termos, reservando-se, ainda, o direito de adotar as medidas legais cabíveis.
+
+4.4.1 – Em caso de suspensão, o usuário será notificado por e-mail e terá o prazo de 7 (sete) dias corridos para apresentar sua manifestação, exercendo seu direito ao contraditório e à ampla defesa. Caso não haja resposta dentro desse período, poderemos prosseguir com o encerramento definitivo da conta.
+
+4.4.2 – Havendo manifestação dentro do prazo, os argumentos apresentados serão analisados internamente em até 30 (trinta) dias corridos, e uma resposta será encaminhada ao usuário.
+
+Agradecemos pela compreensão.
+
+Atenciosamente,
+Equipe ANA Gaming`;
+
+    const fraseSolicitarEmail = `Prezado(a) Francisca,
+
+Agradecemos pela confirmação do seu KYC. Sua colaboração é muito importante para mantermos seus dados atualizados e garantir a segurança de sua conta.
+
+Aproveitamos para solicitar, por gentileza, que nos informe o novo e-mail que deseja cadastrar. Assim que recebemos essa informação, faremos a atualização em nosso sistema imediatamente.
+
+Ficamos à disposição para quaisquer dúvidas ou esclarecimentos.
+
+Atenciosamente,
+Equipe ANA Gaming`;
+
+    const fraseSmartico = `Conforme alinhado pela coordenação da equipe de prevenção à fraude, juntamente aos setores jurídico e suporte, serão creditados R$10,00 aos usuários que receberam a comunicação indevida de saldo disponível em carteira. Creditação realizada às HORA do dia DATA.`;
+
+    // ===== ELEMENTOS DO DOM =====
+    const dropdownBtn = document.getElementById('dropdownBtn');
+    const dropdownContent = document.getElementById('dropdownContent');
+    const dropdownText = document.getElementById('dropdownText');
+    const jiraButtons = document.getElementById('jiraButtons');
+    const riscoButtons = document.getElementById('riscoButtons');
+    const smarticoButtons = document.getElementById('smarticoButtons');
+    const mensagem = document.getElementById('mensagem');
+    const fraseCopiada = document.getElementById('fraseCopiada');
+    const buscaInput = document.getElementById('busca');
+    const darkModeBtn = document.getElementById('darkModeBtn');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+
+    let currentSection = 'jira';
+
+    // ===== FUNÇÕES =====
+    function toggleDropdown() {
+      const expanded = dropdownBtn.getAttribute('aria-expanded') === 'true';
+      dropdownBtn.setAttribute('aria-expanded', String(!expanded));
+      dropdownContent.classList.toggle('show');
+      
+      // Animação do ícone
+      const arrow = document.getElementById('dropdownArrow');
+      arrow.style.transform = expanded ? 'rotate(0deg)' : 'rotate(180deg)';
     }
 
-    // === ELEMENTOS DOM ===
-    const loginScreen = document.getElementById("loginScreen");
-    const loginBtn = document.getElementById("loginBtn");
-    const usernameInput = document.getElementById("username");
-    const passwordInput = document.getElementById("password");
-    const loginError = document.getElementById("loginError");
+    function selectSection(section) {
+      currentSection = section;
+      let sectionName = "";
+      
+      switch(section) {
+        case 'jira':
+          sectionName = "Frases Jira";
+          break;
+        case 'risco':
+          sectionName = "Frases Risco";
+          break;
+        case 'smartico':
+          sectionName = "Frases Smartico";
+          break;
+      }
+      
+      dropdownText.textContent = sectionName;
+      dropdownBtn.setAttribute('aria-expanded', 'false');
+      dropdownContent.classList.remove('show');
+      document.getElementById('dropdownArrow').style.transform = 'rotate(0deg)';
 
-    const mainContainer = document.getElementById("mainContainer");
-    const searchInput = document.getElementById("searchInput");
-    const dropdownBtn = document.getElementById("dropdownBtn");
-    const dropdownContent = document.getElementById("dropdownContent");
-    const phraseButtonsContainer = document.getElementById("phraseButtons");
+      // Mostra a seção selecionada e esconde as outras
+      jiraButtons.style.display = section === 'jira' ? 'block' : 'none';
+      riscoButtons.style.display = section === 'risco' ? 'block' : 'none';
+      smarticoButtons.style.display = section === 'smartico' ? 'block' : 'none';
+      
+      buscaInput.value = "";
+      filtrarBotoes();
+      mensagem.textContent = "";
+      mensagem.classList.remove('show');
+      fraseCopiada.textContent = "";
+    }
 
-    const adminPanel = document.getElementById("adminPanel");
-    const newPhraseInput = document.getElementById("newPhraseInput");
-    const addPhraseBtn = document.getElementById("addPhraseBtn");
-    const editablePhrasesContainer = document.getElementById("editablePhrases");
+    function getCurrentDateTime() {
+      const agora = new Date();
+      const hora = agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+      const dia = String(agora.getDate()).padStart(2, "0");
+      const mes = String(agora.getMonth() + 1).padStart(2, "0");
+      const ano = agora.getFullYear();
+      return { hora, data: `${dia}/${mes}/${ano}` };
+    }
 
-    const darkModeToggle = document.getElementById("darkModeToggle");
+    function copiarFrase(indice) {
+      const { hora, data } = getCurrentDateTime();
+      const frase = frasesBase[indice]
+        .replace("HORA", hora)
+        .replace("DATA", data);
+      copiarTexto(frase);
+    }
 
-    // === LOGIN ADMIN ===
-    loginBtn.addEventListener("click", () => {
-      const user = usernameInput.value.trim();
-      const pass = passwordInput.value;
+    function copiarFraseRisco() {
+      copiarTexto(fraseRisco);
+    }
 
-      // LOGIN SIMPLES: usuário admin/senha senha123
-      if (user === "admin" && pass === "senha123") {
-        usuarioLogado = "admin";
-        loginScreen.style.display = "none";
-        mainContainer.style.display = "block";
-        adminPanel.classList.add("show");
-        atualizarInterface();
-      } else if (user === "" && pass === "") {
-        // login anônimo (usuário normal)
-        usuarioLogado = "user";
-        loginScreen.style.display = "none";
-        mainContainer.style.display = "block";
-        adminPanel.classList.remove("show");
-        atualizarInterface();
+    function copiarFraseSolicitarEmail() {
+      copiarTexto(fraseSolicitarEmail);
+    }
+
+    function copiarFraseSmartico() {
+      const { hora, data } = getCurrentDateTime();
+      const frase = fraseSmartico
+        .replace("HORA", hora)
+        .replace("DATA", data);
+      copiarTexto(frase);
+    }
+
+    function copiarTexto(texto) {
+      navigator.clipboard.writeText(texto)
+        .then(() => {
+          mensagem.textContent = "✅ Frase copiada com sucesso!";
+          mensagem.className = "alert alert-success show";
+          fraseCopiada.textContent = texto;
+          fraseCopiada.focus();
+          
+          setTimeout(() => {
+            mensagem.classList.remove('show');
+          }, 3000);
+        })
+        .catch(() => {
+          mensagem.textContent = "⚠️ Falha ao copiar. Tente manualmente.";
+          mensagem.className = "alert show";
+          
+          setTimeout(() => {
+            mensagem.classList.remove('show');
+          }, 3000);
+        });
+    }
+
+    function filtrarBotoes() {
+      const filtro = buscaInput.value.toLowerCase();
+      let botoesVisiveis = 0;
+
+      let buttonsContainer;
+      switch(currentSection) {
+        case 'jira':
+          buttonsContainer = jiraButtons;
+          break;
+        case 'risco':
+          buttonsContainer = riscoButtons;
+          break;
+        case 'smartico':
+          buttonsContainer = smarticoButtons;
+          break;
+      }
+      
+      const botoes = buttonsContainer.querySelectorAll('.phrase-btn');
+      
+      botoes.forEach(btn => {
+        const matchesFilter = btn.textContent.toLowerCase().includes(filtro);
+        btn.style.display = matchesFilter ? "block" : "none";
+        if (matchesFilter) botoesVisiveis++;
+      });
+
+      if (botoesVisiveis === 0) {
+        mensagem.textContent = "🔍 Nenhuma frase encontrada para essa busca.";
+        mensagem.className = "alert show";
       } else {
-        loginError.style.display = "block";
+        mensagem.textContent = "";
+        mensagem.classList.remove('show');
+      }
+    }
+
+    function setDarkMode(dark) {
+      document.body.classList.toggle('dark-mode', dark);
+      darkModeIcon.textContent = dark ? "☀️" : "🌙";
+      darkModeBtn.setAttribute('aria-pressed', String(dark));
+      localStorage.setItem('darkMode', dark ? '1' : '0');
+      
+      // Adiciona efeito de brilho ao alternar
+      darkModeBtn.style.boxShadow = dark 
+        ? '0 0 15px rgba(255, 255, 255, 0.5)'
+        : '0 0 15px rgba(67, 97, 238, 0.5)';
+      
+      setTimeout(() => {
+        darkModeBtn.style.boxShadow = 'var(--shadow-md)';
+      }, 500);
+    }
+
+    // ===== EVENT LISTENERS =====
+    dropdownBtn.addEventListener('click', toggleDropdown);
+    buscaInput.addEventListener('input', filtrarBotoes);
+
+    window.addEventListener('click', (e) => {
+      if (!dropdownBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+        dropdownBtn.setAttribute('aria-expanded', 'false');
+        dropdownContent.classList.remove('show');
+        document.getElementById('dropdownArrow').style.transform = 'rotate(0deg)';
       }
     });
 
-    passwordInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") loginBtn.click();
+    darkModeBtn.addEventListener('click', () => {
+      const isDark = document.body.classList.contains('dark-mode');
+      setDarkMode(!isDark);
     });
 
-    usernameInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") loginBtn.click();
+    // ===== INICIALIZAÇÃO =====
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedDarkMode = localStorage.getItem('darkMode') === '1';
+      setDarkMode(savedDarkMode);
+      
+      // Mostrar a seção Jira por padrão ao carregar
+      selectSection('jira');
+      
+      // Adiciona animação ao carregar
+      document.querySelector('.container').style.animation = 'fadeIn 0.5s ease-out';
     });
-
-    // === FUNÇÃO DE ATUALIZAÇÃO DE INTERFACE ===
-    function atualizarInterface() {
-      montarDropdown();
-      setCategoria(categoriaAtual);
-    }
-
-    // === DROPDOWN ===
-    dropdownBtn.addEventListener("click", () => {
-      dropdownAberto = !dropdownAberto;
-      atualizarDropdown();
-    });
-
-    dropdownContent.addEventListener("click", (e) => {
-      if (e.target.classList.contains("dropdown-item")) {
-        const cat = e.target.textContent;
-        setCategoria(cat);
-        dropdownAberto = false;
-        atualizarDropdown();
-      }
-    });
-
-    function montarDropdown() {
-      dropdownContent.innerHTML = "";
-      categorias.forEach((cat) => {
-        const btn = document.createElement("button");
-        btn.textContent = cat;
-        btn.className = "dropdown-item";
-        btn.setAttribute("role", "option");
-        btn.setAttribute("tabindex", "0");
-        dropdownContent.appendChild(btn);
-      });
-      atualizarDropdown();
-    }
-
-    function atualizarDropdown() {
-      if (dropdownAberto) {
-        dropdownContent.classList.add("show");
-        dropdownBtn.setAttribute("aria-expanded", "true");
-      } else {
-        dropdownContent.classList.remove("show");
-        dropdownBtn.setAttribute("aria-expanded", "false");
-      }
-    }
-
-    // === SETAR CATEGORIA ===
-    function setCategoria(cat) {
-      categoriaAtual = cat;
-      dropdownBtn.firstChild.textContent = cat;
-      filtrarEExibirFrases("");
-      if (usuarioLogado === "admin") {
-        carregarFrasesParaEdicao();
-      }
-    }
-
-    // === FILTRAR E EXIBIR FRASES ===
-    searchInput.addEventListener("input", () => {
-      filtrarEExibirFrases(searchInput.value.trim());
-    });
-
-    function filtrarEExibirFrases(filtro) {
-      frasesAtuais = frasesPorCategoria[categoriaAtual] || [];
-      if (filtro.length > 0) {
-        frasesAtuais = frasesAtuais.filter((frase) =>
-          frase.toLowerCase().includes(filtro.toLowerCase())
-        );
-      }
-      montarBotoesFrases(frasesAtuais);
-    }
-
-    // === MONTAR BOTOES DE FRASES ===
-    function montarBotoesFrases(frases) {
-      phraseButtonsContainer.innerHTML = "";
-      if (frases.length === 0) {
-        phraseButtonsContainer.textContent = "Nenhuma frase encontrada.";
-        return;
-      }
-
-      frases.forEach((frase, index) => {
-        const btn = document.createElement("button");
-        btn.className = "phrase-btn";
-        btn.textContent = frase;
-        btn.title = "Clique para copiar a frase";
-        btn.addEventListener("click", () => copiarTexto(frase));
-        phraseButtonsContainer.appendChild(btn);
-      });
-    }
-
-    // === COPIAR TEXTO PARA ÁREA DE TRANSFERÊNCIA ===
-    async function copiarTexto(texto) {
-      try {
-        await navigator.clipboard.writeText(texto);
-        alert("Frase copiada para a área de transferência!");
-      } catch (err) {
-        alert("Erro ao copiar: " + err);
-      }
-    }
-
-    // === ADMIN - CARREGAR FRASES PARA EDIÇÃO ===
-    function carregarFrasesParaEdicao() {
-      editablePhrasesContainer.innerHTML = "";
-      const frases = frasesPorCategoria[categoriaAtual] || [];
-      frases.forEach((frase, idx) => {
-        criarLinhaEdicao(frase, idx);
-      });
-    }
-
-    // === CRIAR LINHA DE EDIÇÃO ===
-    function criarLinhaEdicao(frase, idx) {
-      const div = document.createElement("div");
-      div.className = "editable-phrase";
-
-      const input = document.createElement("input");
-      input.type = "text";
-      input.value = frase;
-      input.dataset.index = idx;
-
-      const btnDelete = document.createElement("button");
-      btnDelete.textContent = "✖";
-      btnDelete.title = "Excluir frase";
-      btnDelete.addEventListener("click", () => {
-        if (confirm("Tem certeza que deseja excluir esta frase?")) {
-          frasesPorCategoria[categoriaAtual].splice(idx, 1);
-          salvarFrasesLocal();
-          carregarFrasesParaEdicao();
-          filtrarEExibirFrases(searchInput.value.trim());
-        }
-      });
-
-      input.addEventListener("change", (e) => {
-        const i = parseInt(e.target.dataset.index, 10);
-        frasesPorCategoria[categoriaAtual][i] = e.target.value.trim();
-        salvarFrasesLocal();
-        filtrarEExibirFrases(searchInput.value.trim());
-      });
-
-      div.appendChild(input);
-      div.appendChild(btnDelete);
-      editablePhrasesContainer.appendChild(div);
-    }
-
-    // === ADMIN - ADICIONAR NOVA FRASE ===
-    addPhraseBtn.addEventListener("click", () => {
-      const novaFrase = newPhraseInput.value.trim();
-      if (novaFrase.length === 0) {
-        alert("Digite uma frase para adicionar.");
-        return;
-      }
-      frasesPorCategoria[categoriaAtual].push(novaFrase);
-      newPhraseInput.value = "";
-      salvarFrasesLocal();
-      carregarFrasesParaEdicao();
-      filtrarEExibirFrases(searchInput.value.trim());
-    });
-
-    // === SALVAR FRASES NO LOCAL STORAGE ===
-    function salvarFrasesLocal() {
-      try {
-        localStorage.setItem("frasesSalvas", JSON.stringify(frasesPorCategoria));
-      } catch (e) {
-        console.warn("Não foi possível salvar localmente.", e);
-      }
-    }
-
-    // === DARK MODE ===
-    function carregarTema() {
-      const tema = localStorage.getItem("tema") || "claro";
-      if (tema === "escuro") {
-        document.body.classList.add("dark-mode");
-        darkModeToggle.textContent = "☀️";
-      } else {
-        document.body.classList.remove("dark-mode");
-        darkModeToggle.textContent = "🌓";
-      }
-    }
-
-    darkModeToggle.addEventListener("click", () => {
-      document.body.classList.toggle("dark-mode");
-      if (document.body.classList.contains("dark-mode")) {
-        darkModeToggle.textContent = "☀️";
-        localStorage.setItem("tema", "escuro");
-      } else {
-        darkModeToggle.textContent = "🌓";
-        localStorage.setItem("tema", "claro");
-      }
-    });
-
-    // === INICIALIZAÇÃO ===
-    carregarTema();
-
   </script>
 </body>
 </html>
