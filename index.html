@@ -385,6 +385,7 @@
     <div id="smarticoButtons" class="section-buttons" aria-live="polite">
       <button class="phrase-btn" onclick="copiarFraseSmartico()" title="Creditação comunicação indevida">Creditação comunicação indevida</button>
       <button class="phrase-btn" onclick="copiarFraseCreditacaoRodadas()" title="Creditação de Rodadas">Creditação de Rodadas</button>
+      <button class="phrase-btn" onclick="copiarFraseReprovacaoTiger()" title="Reprovação Tiger">Reprovação Tiger</button>
     </div>
 
     <div id="mensagem" class="alert" aria-live="assertive" role="alert"></div>
@@ -539,6 +540,12 @@ Equipe ANA Gaming`;
       const frase = fraseCreditacaoRodadas
         .replace("HORA", hora)
         .replace("DATA", data);
+      copiarTexto(frase);
+    }
+
+    function copiarFraseReprovacaoTiger() {
+      const { hora, data } = getCurrentDateTime();
+      const frase = `Jogador não recebeu a comunicação da promoção.\nReprovado em ${data} às ${hora}.`;
       copiarTexto(frase);
     }
 
