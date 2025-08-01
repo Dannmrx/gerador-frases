@@ -386,6 +386,7 @@
       <button class="phrase-btn" onclick="copiarFraseSmartico()" title="Creditação comunicação indevida">Creditação comunicação indevida</button>
       <button class="phrase-btn" onclick="copiarFraseCreditacaoRodadas()" title="Creditação de Rodadas">Creditação de Rodadas</button>
       <button class="phrase-btn" onclick="copiarFraseReprovacaoTiger()" title="Reprovação Tiger">Reprovação Tiger</button>
+      <button class="phrase-btn" onclick="copiarFraseReprovacaoMaumau()" title="Reprovação maumau">Reprovação maumau</button>
     </div>
 
     <div id="mensagem" class="alert" aria-live="assertive" role="alert"></div>
@@ -546,6 +547,12 @@ Equipe ANA Gaming`;
     function copiarFraseReprovacaoTiger() {
       const { hora, data } = getCurrentDateTime();
       const frase = `Jogador não recebeu a comunicação da promoção.\nReprovado em ${data} às ${hora}.`;
+      copiarTexto(frase);
+    }
+
+    function copiarFraseReprovacaoMaumau() {
+      const { hora, data } = getCurrentDateTime();
+      const frase = `O cliente girou a roleta e recebeu a premiação corretamente ontem. Como a roleta é liberada apenas uma vez por dia e a premiação já foi concedida, não há justificativa para nova creditação.\n\nReprovado em ${data} às ${hora}.`;
       copiarTexto(frase);
     }
 
